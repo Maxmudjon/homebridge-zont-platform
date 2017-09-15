@@ -16,7 +16,7 @@ locating the car;
 record information about the routes of movement.
 
 This version of the plug-in is supported only by these ZONT devices. Please see the pictures below.
-![](https://raw.githubusercontent.com/Maxmudjon/images/master/Mijia-Gate-way-200x200.jpg)
+![](https://raw.githubusercontent.com/Maxmudjon/images/master/zont720_311x400.png)
 
 
 ### Installation
