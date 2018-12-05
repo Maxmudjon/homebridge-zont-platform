@@ -27,6 +27,7 @@ This version of the plug-in is supported only by these ZONT devices. Please see 
 ### Configuration
 1. To manage devices, enter the username and password from Zont to ~ / .homebridge / config.json.
 
+```
 "platforms": [
     {
         "platform": "ZontPlatform",
@@ -34,7 +35,7 @@ This version of the plug-in is supported only by these ZONT devices. Please see 
         "password": "1234"
     }
 ]
-
+```
 ### Run it
 1. From source code
 
