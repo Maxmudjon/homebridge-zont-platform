@@ -86,8 +86,7 @@ function updateZont (noThis)
 			'user': noThis.username,
 			'pass': noThis.password
 		}
-	},function(err, response, body)
-	{
+	},function(err, response, body)	{
 			 if (!err && response.statusCode == 200)
 			 {
 					var state = JSON.parse(body);
@@ -102,72 +101,150 @@ function updateZont (noThis)
 
 ZontPlatform.prototype.addDevices = function(devices, noThis)
 {
-	for (var index in devices)
-	{
-		if (devices[index]["device_type"]["code"] == "ZTC-720")
-		{
+	for (var index in devices) {
+		if (devices[index]["device_type"]["code"] == "ZTC-720")	{
 			var deviceCode = "Сигналка 720"
 			var deviceSid = devices[index]["id"];
 		    var gatewaySid = this.username;
 
-			if (!this.lastGatewayUpdateTime[gatewaySid] || this.lastGatewayUpdateTime[gatewaySid] < devices[0]["last_receive_time"])
+			if (!this.lastGatewayUpdateTime[gatewaySid] || this.lastGatewayUpdateTime[gatewaySid] < devices[index]["last_receive_time"])
 			{
 
-				this.lastGatewayUpdateTime[gatewaySid] = devices[0]["last_receive_time"];
-				var c1State = (devices[0]["io"]["guard-state"] == "disabled") ?   false: true;
-				if (devices[0]["io"]["auto-ignition"])
+				this.lastGatewayUpdateTime[gatewaySid] = devices[index]["last_receive_time"];
+				var c1State = (devices[index]["io"]["guard-state"] == "disabled") ?   false: true;
+				if (devices[index]["io"]["auto-ignition"])
 				{
-					var cState = (devices[0]["io"]["auto-ignition"]["state"] == "disabled") ?   false: true;
+					var cState = (devices[index]["io"]["auto-ignition"]["state"] == "disabled") ?   false: true;
 					this.setSwitch(deviceCode + "Автозапуск",gatewaySid, deviceSid,'auto-ignition' + deviceSid, cState,"auto-ignition", "auto-ignition", 'enabled', 'disabled', noThis);
 				}
 			    this.setSwitch(deviceCode + "Охрана",gatewaySid, deviceSid,'guard-state' + deviceSid, c1State,"guard-state", "string", 'enabled', 'disabled', noThis);
-			    this.setSwitch(deviceCode + "Сирена",gatewaySid, deviceSid,'siren' + deviceSid, devices[0]["io"]["siren"],"siren", "bool" ,true , false, noThis);
-				this.setSwitch(deviceCode + "Блокировка",gatewaySid, deviceSid,'engine-block' + deviceSid, devices[0]["io"]["engine-block"],"engine-block", "bool" ,true, false, noThis);
-				this.setMotion(deviceCode + "Зажигание",gatewaySid, deviceSid,'ignition-state' + deviceSid, devices[0]["io"]["ignition-state"]);
-				this.setMotion(deviceCode + "Двигатель",gatewaySid, deviceSid,'engine-state' + deviceSid, devices[0]["io"]["engine-state"]);
-				this.setMotion(deviceCode + "Двери",gatewaySid, deviceSid,'doors' + deviceSid, devices[0]["io"]["doors"]);
-				this.setDoors(deviceCode + "1 двер", gatewaySid, deviceSid,'door-1' + deviceSid, devices[0]["io"]["door-1"])
-				this.setDoors(deviceCode + "2 двер", gatewaySid, deviceSid,'door-2' + deviceSid, devices[0]["io"]["door-2"])
-				this.setDoors(deviceCode + "3 двер", gatewaySid, deviceSid,'door-3' + deviceSid, devices[0]["io"]["door-3"])
-				this.setDoors(deviceCode + "4 двер", gatewaySid, deviceSid,'door-4' + deviceSid, devices[0]["io"]["door-4"])
-				this.setMotion(deviceCode + "Капот",gatewaySid, deviceSid,'hood' + deviceSid, devices[0]["io"]["hood"]);
-				this.setMotion(deviceCode + "Багажник",gatewaySid, deviceSid,'trunk' + deviceSid, devices[0]["io"]["trunk"]);
-				this.setMotion(deviceCode + "Диагностика",gatewaySid, deviceSid,'ecu-diagnostics-active' + deviceSid, devices[0]["io"]["ecu-diagnostics-active"]);
-				this.setMotion(deviceCode + "Тревога",gatewaySid, deviceSid,'shock' + deviceSid, devices[0]["io"]["shock"]);
-				this.setMotion(deviceCode + "Нет свзи",gatewaySid, deviceSid,'online' + deviceSid, !devices[0]["online"]);
+			    this.setSwitch(deviceCode + "Сирена",gatewaySid, deviceSid,'siren' + deviceSid, devices[index]["io"]["siren"],"siren", "bool" ,true , false, noThis);
+				this.setSwitch(deviceCode + "Блокировка",gatewaySid, deviceSid,'engine-block' + deviceSid, devices[index]["io"]["engine-block"],"engine-block", "bool" ,true, false, noThis);
+				this.setMotion(deviceCode + "Зажигание",gatewaySid, deviceSid,'ignition-state' + deviceSid, devices[index]["io"]["ignition-state"]);
+				this.setMotion(deviceCode + "Двигатель",gatewaySid, deviceSid,'engine-state' + deviceSid, devices[index]["io"]["engine-state"]);
+				this.setMotion(deviceCode + "Двери",gatewaySid, deviceSid,'doors' + deviceSid, devices[index]["io"]["doors"]);
+				this.setDoors(deviceCode + "1 двер", gatewaySid, deviceSid,'door-1' + deviceSid, devices[index]["io"]["door-1"])
+				this.setDoors(deviceCode + "2 двер", gatewaySid, deviceSid,'door-2' + deviceSid, devices[index]["io"]["door-2"])
+				this.setDoors(deviceCode + "3 двер", gatewaySid, deviceSid,'door-3' + deviceSid, devices[index]["io"]["door-3"])
+				this.setDoors(deviceCode + "4 двер", gatewaySid, deviceSid,'door-4' + deviceSid, devices[index]["io"]["door-4"])
+				this.setMotion(deviceCode + "Капот",gatewaySid, deviceSid,'hood' + deviceSid, devices[index]["io"]["hood"]);
+				this.setMotion(deviceCode + "Багажник",gatewaySid, deviceSid,'trunk' + deviceSid, devices[index]["io"]["trunk"]);
+				this.setMotion(deviceCode + "Диагностика",gatewaySid, deviceSid,'ecu-diagnostics-active' + deviceSid, devices[index]["io"]["ecu-diagnostics-active"]);
+				this.setMotion(deviceCode + "Тревога",gatewaySid, deviceSid,'shock' + deviceSid, devices[index]["io"]["shock"]);
+				this.setMotion(deviceCode + "Нет свзи",gatewaySid, deviceSid,'online' + deviceSid, !devices[index]["online"]);
 				
-				var custom_controls = devices[0]["custom_controls"];
+				var custom_controls = devices[index]["custom_controls"];
+				console.log(custom_controls)
 
-for (var control_no = 0; control_no < custom_controls.length; control_no++)
-{
-    //console.log('control', control_no);
-    var control = custom_controls[control_no];
-    var commands = control['commands'];
-    var statuses = control['statuses'];
+				for (var control_no = 0; control_no < custom_controls.length; control_no++) {
+					//console.log('control', control_no);
+					var control = custom_controls[control_no];
+					var commands = control['commands'];
+					var statuses = control['statuses'];
 
 
-    if (commands != null)
-    {
-        for (var i = 0; i < commands.length; i++)
-        {
-            var command = commands[i];
-            //console.log('  command', command['id'], command['name']);
-            this.setCustomSwitch(deviceCode + command['name'], gatewaySid, deviceSid, command['name'] + deviceSid, command['id'], noThis);
+					if (commands != null)
+					{
+					    for (var i = 0; i < commands.length; i++)
+					    {
+					        var command = commands[i];
+					        //console.log('  command', command['id'], command['name']);
+					        this.setCustomSwitch(deviceCode + command['name'], gatewaySid, deviceSid, command['name'] + deviceSid, command['id'], noThis);
+					    }
+					}
+
+					if (statuses != null)
+					{
+					    for (var i = 0; i < statuses.length; i++)
+					    {
+					        var status = statuses[i];
+					    }
+					}
+				}
+
+
+                var tempValue = JSON.parse(JSON.stringify(devices[index]["io"]["temperature"]));
+                var AmountTempValue = JSON.parse(JSON.stringify(devices[index]["temperature_conf"]["assignments"]));
+
+                for (var value in AmountTempValue) {
+                	if (tempValue[value].state == "ok"){
+                		currentState = tempValue[value].value
+                		lastState = currentState
+                		if (currentState != lastState){
+                			newState = currentState
+                            this.setTermperature(deviceCode + AmountTempValue[value], gatewaySid, deviceSid,AmountTempValue[value] + deviceSid, newState)
+                        }
+                    }
+                }
+            }
         }
-    }
 
-    if (statuses != null)
-    {
-        for (var i = 0; i < statuses.length; i++)
-        {
-            var status = statuses[i];
-        }
-    }
-}
+        //console.log(devices[index]["device_type"]["code"])
+        if (devices[index]["device_type"]["code"] == "ZTC-710")	{
+			var deviceCode = "Сигналка 720"
+			var deviceSid = devices[index]["id"];
+		    var gatewaySid = this.username;
+		    console.log('---------------------------')
+		    console.log(devices[index]['io'])
+		    console.log('---------------------------')
+
+			if (!this.lastGatewayUpdateTime[gatewaySid] || this.lastGatewayUpdateTime[gatewaySid] < devices[index]["last_receive_time"]) {
+
+				this.lastGatewayUpdateTime[gatewaySid] = devices[index]["last_receive_time"];
+				var c1State = (devices[index]["io"]["guard-state"] == "disabled") ?   false: true;
+				if (devices[index]["io"]["auto-ignition"])
+				{
+					var cState = (devices[index]["io"]["auto-ignition"]["state"] == "disabled") ?   false: true;
+					this.setSwitch(deviceCode + "Автозапуск",gatewaySid, deviceSid,'auto-ignition' + deviceSid, cState,"auto-ignition", "auto-ignition", 'enabled', 'disabled', noThis);
+				}
+			    this.setSwitch(deviceCode + "Охрана",gatewaySid, deviceSid,'guard-state' + deviceSid, c1State,"guard-state", "string", 'enabled', 'disabled', noThis);
+			    this.setSwitch(deviceCode + "Сирена",gatewaySid, deviceSid,'siren' + deviceSid, devices[index]["io"]["siren"],"siren", "bool" ,true , false, noThis);
+				this.setSwitch(deviceCode + "Блокировка",gatewaySid, deviceSid,'engine-block' + deviceSid, devices[index]["io"]["engine-block"],"engine-block", "bool" ,true, false, noThis);
+				this.setMotion(deviceCode + "Зажигание",gatewaySid, deviceSid,'ignition-state' + deviceSid, devices[index]["io"]["ignition-state"]);
+				this.setMotion(deviceCode + "Двигатель",gatewaySid, deviceSid,'engine-state' + deviceSid, devices[index]["io"]["engine-state"]);
+				this.setMotion(deviceCode + "Двери",gatewaySid, deviceSid,'doors' + deviceSid, devices[index]["io"]["doors"]);
+				this.setDoors(deviceCode + "1 двер", gatewaySid, deviceSid,'door-1' + deviceSid, devices[index]["io"]["door-1"])
+				this.setDoors(deviceCode + "2 двер", gatewaySid, deviceSid,'door-2' + deviceSid, devices[index]["io"]["door-2"])
+				this.setDoors(deviceCode + "3 двер", gatewaySid, deviceSid,'door-3' + deviceSid, devices[index]["io"]["door-3"])
+				this.setDoors(deviceCode + "4 двер", gatewaySid, deviceSid,'door-4' + deviceSid, devices[index]["io"]["door-4"])
+				this.setMotion(deviceCode + "Капот",gatewaySid, deviceSid,'hood' + deviceSid, devices[index]["io"]["hood"]);
+				this.setMotion(deviceCode + "Багажник",gatewaySid, deviceSid,'trunk' + deviceSid, devices[index]["io"]["trunk"]);
+				this.setMotion(deviceCode + "Диагностика",gatewaySid, deviceSid,'ecu-diagnostics-active' + deviceSid, devices[index]["io"]["ecu-diagnostics-active"]);
+				this.setMotion(deviceCode + "Тревога",gatewaySid, deviceSid,'shock' + deviceSid, devices[index]["io"]["shock"]);
+				this.setMotion(deviceCode + "Нет свзи",gatewaySid, deviceSid,'online' + deviceSid, !devices[index]["online"]);
+				
+				var custom_controls = devices[index]["custom_controls"];
+				console.log(custom_controls)
+
+				for (var control_no = 0; control_no < custom_controls.length; control_no++) {
+					//console.log('control', control_no);
+					var control = custom_controls[control_no];
+					var commands = control['commands'];
+					var statuses = control['statuses'];
 
 
-                var tempValue = JSON.parse(JSON.stringify(devices[0]["io"]["temperature"]));
-                var AmountTempValue = JSON.parse(JSON.stringify(devices[0]["temperature_conf"]["assignments"]));
+					if (commands != null)
+					{
+					    for (var i = 0; i < commands.length; i++)
+					    {
+					        var command = commands[i];
+					        //console.log('  command', command['id'], command['name']);
+					        this.setCustomSwitch(deviceCode + command['name'], gatewaySid, deviceSid, command['name'] + deviceSid, command['id'], noThis);
+					    }
+					}
+
+					if (statuses != null)
+					{
+					    for (var i = 0; i < statuses.length; i++)
+					    {
+					        var status = statuses[i];
+					    }
+					}
+				}
+
+
+                var tempValue = JSON.parse(JSON.stringify(devices[index]["io"]["temperature"]));
+                var AmountTempValue = JSON.parse(JSON.stringify(devices[index]["temperature_conf"]["assignments"]));
 
                 for (var value in AmountTempValue) {
                 	if (tempValue[value].state == "ok"){
@@ -452,3 +529,4 @@ ZontPlatform.prototype.removeAccessory = function() {
   this.api.unregisterPlatformAccessories("homebridge-ZontPlatform", "ZontPlatform", this.accessories);
   this.accessories = [];
 }
+
