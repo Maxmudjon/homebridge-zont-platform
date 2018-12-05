@@ -27,27 +27,21 @@ This version of the plug-in is supported only by these ZONT devices. Please see 
 ### Configuration
 1. To manage devices, enter the username and password from Zont to ~ / .homebridge / config.json.
 
-
-        {
-            "platforms": [
-            {
-                "platform": "ZontPlatform",
-                "username": ["demo"],
-                "password": ["1234"]
-            }]
-        }
-
-
+"platforms": [
+    {
+        "platform": "ZontPlatform",
+        "username": "demo",
+        "password": "1234"
+    }
+]
 
 ### Run it
 1. From source code
-
 
         $ cd /path/to/homebridge-zont-platform
         $ DEBUG=* homebridge -D -P .
 
 2. As homebridge plugin
-
 
         $ npm install -g homebridge-zont-platform
         $ homebridge

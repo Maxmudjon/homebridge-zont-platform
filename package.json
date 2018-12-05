@@ -22,5 +22,9 @@
     "node": ">=0.12.0",
     "homebridge": ">=0.4.1"
   },
-  "homepage": "https://github.com/Maxmudjon/homebridge-zont-platform#readme"
+  "homepage": "https://github.com/Maxmudjon/homebridge-zont-platform#readme",
+  "dependencies": {
+    "request": "^2.80.0",
+    "polling-to-event": "^2.1.0"
+  }
 }

@@ -1,20 +1,22 @@
 var http = require('http');
 var request = require("request");
 var pollingtoevent = require('polling-to-event');
+var fs = require('fs');
 var Accessory, Service, Characteristic, UUIDGen, PlatformAccessory;
 
 module.exports = function(homebridge) {
-  console.log("homebridge API version: " + homebridge.version);
-  Accessory = homebridge.hap.Accessory;
-  PlatformAccessory = homebridge.platformAccessory;
-  Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-  UUIDGen = homebridge.hap.uuid;
-  homebridge.registerPlatform("homebridge-zont-platform", "ZontPlatform", ZontPlatform, true);
+	if(!isConfig(homebridge.user.configPath(), "platforms", "ZontPlatform")) {
+        return;
+    }
+	Accessory = homebridge.hap.Accessory;
+	PlatformAccessory = homebridge.platformAccessory;
+	Service = homebridge.hap.Service;
+	Characteristic = homebridge.hap.Characteristic;
+	UUIDGen = homebridge.hap.uuid;
+	homebridge.registerPlatform("homebridge-zont-platform", "ZontPlatform", ZontPlatform, true);
 }
 
 function ZontPlatform(log, config, api) {
-  log("ZontPlatform Init");
   var platform = this;
   this.log = log;
   this.config = config;
@@ -24,6 +26,7 @@ function ZontPlatform(log, config, api) {
   this.lastDeviceUpdateTime = {};
   this.username = config['username'];
   this.password = config['password'];
+  this.log("Zont Platform Init");
 
   if (api) {
 
@@ -35,6 +38,28 @@ function ZontPlatform(log, config, api) {
   }
 
   setInterval(updateZont,2000,this);
+}
+
+function isConfig(configFile, type, name) {
+    var config = JSON.parse(fs.readFileSync(configFile));
+    if("accessories" === type) {
+        var accessories = config.accessories;
+        for(var i in accessories) {
+            if(accessories[i]['accessory'] === name) {
+                return true;
+            }
+        }
+    } else if("platforms" === type) {
+        var platforms = config.platforms;
+        for(var i in platforms) {
+            if(platforms[i]['platform'] === name) {
+                return true;
+            }
+        }
+    } else {
+    }
+    
+    return false;
 }
 
 ZontPlatform.prototype.configureAccessory = function(accessory) {
@@ -136,10 +161,8 @@ for (var control_no = 0; control_no < custom_controls.length; control_no++)
         for (var i = 0; i < statuses.length; i++)
         {
             var status = statuses[i];
-            //console.log('  status', status['id'], status['name']);
         }
     }
-   // console.log();
 }
 
 
@@ -200,7 +223,7 @@ ZontPlatform.prototype.setMotion = function(name,gatewaySid, deviceSid,subDevice
     Service.MotionSensor,
     Characteristic.MotionDetected,
     State,
-    null,null,null,null); // No commander
+    null,null,null,null);
 }
 
 ZontPlatform.prototype.setDoors = function(name,gatewaySid, deviceSid, subDeviceSid, State)
@@ -214,7 +237,7 @@ ZontPlatform.prototype.setDoors = function(name,gatewaySid, deviceSid, subDevice
     Service.ContactSensor,
     Characteristic.ContactSensorState,
     State,
-    null,null,null,null); // No commander
+    null,null,null,null);
 }
 
 ZontPlatform.prototype.setTermperature = function(name,gatewaySid, deviceSid,subDeviceSid, State)
@@ -228,7 +251,7 @@ ZontPlatform.prototype.setTermperature = function(name,gatewaySid, deviceSid,sub
     Service.TemperatureSensor,
     Characteristic.CurrentTemperature,
     State,
-    null,null,null,null); // No commander
+    null,null,null,null);
 }
 
 ZontPlatform.prototype.getAccessoryModel = function(type) {
@@ -269,9 +292,7 @@ function setState(device, portname, type, state, noThis)
 		}
 	},function(err, response, body) {
 			 if (!err && response.statusCode == 200) {
-				 //callback(null);
 			 }else{
-				 //callback( new Error(response.statusCode));
 				 console.log(' ERROR REQUEST RESULTS:', err, response.statusCode, body);
 			 }
 	}.bind(this));
@@ -292,9 +313,7 @@ function sendCustomCommand(device, command_id, on, off, noThis)
     }
 	},function(err, response, body) {
 			 if (!err && response.statusCode == 200) {
-				 //callback(null);
 			 }else{
-				 //callback( new Error(response.statusCode));
 				 console.log(' ERROR REQUEST RESULTS:', err, response.statusCode, body);
 			 }
 	}.bind(this));
